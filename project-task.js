@@ -44,6 +44,14 @@ Step-by-Step:
 3. Return the filtered result.
 */
 
+const inStockOnly = (product) => product.inStock === true;
+
+const productsInStock = products.filter(inStockOnly);
+const priceAbove500 = (product) => product.price > 500;
+
+const productsAbove500 = products.filter(priceAbove500);
+
+
 
 /*
 🔹 Task 2: Transform Product Names
@@ -55,7 +63,7 @@ Step-by-Step:
 2. Extract and transform the `name` property to uppercase.
 3. Store the result in a new variable.
 */
-
+const uppercasedNames = products.map((product) => product.name.toUpperCase());
 
 /*
 🔹 Task 3: Generate Discounted Prices
@@ -71,7 +79,17 @@ Step-by-Step:
 4. Print the array of products to verify the new property and value have been added to each product object.
 */
 
+const applyDiscount = (discountPercent) => {
+  return (product) => {
+    const discount = product.price * (discountPercent / 100);
+    return product.price - discount;
+  };
+};
+const discount10 = applyDiscount(10);
 
+products.forEach((product) => {
+  product.salePrice = discount10(product);
+});
 /*
 🔹 Task 4: Calculate Total Inventory Value
 
@@ -82,7 +100,9 @@ Step-by-Step:
 2. Add only the prices of products where `inStock` is true.
 3. Store the total in a new variable.
 */
-
+const totalInStockValue = products.reduce((total, product) => {
+  return product.inStock ? total + product.price : total;
+}, 0);
 
 // ============================================
 // 🧪 Console Test Your Work
@@ -92,3 +112,20 @@ Step-by-Step:
 // console.log("Uppercased names:", ...);
 // console.log("Discounted products:", ...);
 // console.log("Total value in stock:", ...);
+
+console.log("Products in stock:", productsInStock);
+console.log("Products above $500:", productsAbove500);
+console.log("Uppercased names:", uppercasedNames);
+console.log("Discounted products:", products);
+console.log("Total value in stock:", totalInStockValue);
+
+//Extra test cases
+// 🔹 Extra Test 3: Products NOT in stock
+const notInStock = (product) => product.inStock === false;
+const productsNotInStock = products.filter(notInStock);
+console.log("TEST 3 — Products NOT in stock:", productsNotInStock);
+
+// 🔹 Extra Test 4: Products priced 250 or more
+const price250OrMore = (product) => product.price >= 250;
+const products250OrMore = products.filter(price250OrMore);
+console.log("TEST 4 — Products priced >= 250:", products250OrMore);
